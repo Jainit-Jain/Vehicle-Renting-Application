@@ -21,6 +21,17 @@ public class User {
 
 	@Enumerated(EnumType.STRING)
 	private UserRole role;
+	
+	@OneToOne
+	private Image profilePicture;
+
+	public Image getProfilePicture() {
+		return profilePicture;
+	}
+
+	public void setProfilePicture(Image profilePicture) {
+		this.profilePicture = profilePicture;
+	}
 
 	public int getUserId() {
 		return userId;
