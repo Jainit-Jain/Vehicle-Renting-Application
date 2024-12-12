@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.vehiclerentingapplication.entity.Image;
 import com.example.vehiclerentingapplication.entity.User;
 import com.example.vehiclerentingapplication.exception.FailedToUploadImageException;
+import com.example.vehiclerentingapplication.exception.ImageNotFoundException;
 import com.example.vehiclerentingapplication.exception.UserNotFoundByIdException;
 import com.example.vehiclerentingapplication.repository.ImageRepository;
 import com.example.vehiclerentingapplication.repository.UserRepository;
@@ -54,5 +55,14 @@ public class ImageService {
 		}
 
 		return image;
+	}
+
+	public Image findImageById(int imageId) {
+		Optional<Image> optional = imageRepository.findById(imageId);
+		if (optional.isPresent()) {
+			return optional.get();
+		} else {
+			throw new ImageNotFoundException("Failed to find the image with the given Id");
+		}
 	}
 }
