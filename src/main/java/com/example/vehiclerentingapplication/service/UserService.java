@@ -29,34 +29,4 @@ public class UserService {
 	public User saveUser(User user) {
 		return userRepository.save(user);
 	}
-
-	public void addUserProfilePicture(int userId, MultipartFile multipartFile) {
-
-		Optional<User> optional = userRepository.findById(userId);
-
-		if (optional.isPresent()) {
-
-			Image image = getImage(multipartFile);
-			image = imageRepository.save(image);
-
-			User user = optional.get();
-			user.setProfilePicture(image);
-			userRepository.save(user);
-		} else {
-			throw new UserNotFoundByIdException("Failed to Find the user");
-		}
-	}
-
-	private Image getImage(MultipartFile imagefile) {
-		Image image = new Image();
-		try {
-			byte[] imageBytes = imagefile.getBytes();
-			image.setContentType(imagefile.getContentType());
-			image.setImageBytes(imageBytes);
-		} catch (IOException e) {
-			throw new FailedToUploadImageException("Failed to upload the Image");
-		}
-
-		return image;
-	}
 }
