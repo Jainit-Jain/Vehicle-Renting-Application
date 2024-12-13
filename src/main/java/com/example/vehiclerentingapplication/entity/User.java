@@ -22,7 +22,7 @@ public class User {
 	@Enumerated(EnumType.STRING)
 	private UserRole role;
 	
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	private Image profilePicture;
 
 	public Image getProfilePicture() {

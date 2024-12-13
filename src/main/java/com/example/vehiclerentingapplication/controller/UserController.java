@@ -2,8 +2,10 @@ package com.example.vehiclerentingapplication.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.vehiclerentingapplication.request.UserRequest;
@@ -25,5 +27,12 @@ public class UserController {
 		UserResponse userResponse = userService.saveUser(userRequest);
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(ResponseStructure.create(HttpStatus.CREATED.value(), "User Created", userResponse));
+	}
+
+	@GetMapping("/users")
+	public ResponseEntity<ResponseStructure<UserResponse>> getUserById(@RequestParam("userId") int id) {
+		UserResponse userResponse = userService.getUserById(id);
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(ResponseStructure.create(HttpStatus.OK.value(), "User fetched successfully", userResponse));
 	}
 }
