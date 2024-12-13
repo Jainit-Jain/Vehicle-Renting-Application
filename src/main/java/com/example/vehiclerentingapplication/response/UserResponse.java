@@ -1,14 +1,9 @@
-package com.example.vehiclerentingapplication.entity;
+package com.example.vehiclerentingapplication.response;
 
 import com.example.vehiclerentingapplication.enums.UserRole;
 
-import jakarta.persistence.*;
+public class UserResponse {
 
-@Entity
-public class User {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int userId;
 
 	private String username;
@@ -17,20 +12,16 @@ public class User {
 
 	private String phoneNumber;
 
-	private String password;
-
-	@Enumerated(EnumType.STRING)
 	private UserRole role;
-	
-	@OneToOne(fetch = FetchType.LAZY)
-	private Image profilePicture;
 
-	public Image getProfilePicture() {
-		return profilePicture;
+	private String profilePictureLink;
+
+	public String getProfilePictureLink() {
+		return profilePictureLink;
 	}
 
-	public void setProfilePicture(Image profilePicture) {
-		this.profilePicture = profilePicture;
+	public void setProfilePictureLink(String profilePictureLink) {
+		this.profilePictureLink = profilePictureLink;
 	}
 
 	public int getUserId() {
@@ -63,14 +54,6 @@ public class User {
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	public UserRole getRole() {

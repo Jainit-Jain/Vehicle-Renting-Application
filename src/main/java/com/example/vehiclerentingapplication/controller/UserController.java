@@ -1,20 +1,17 @@
 package com.example.vehiclerentingapplication.controller;
 
-import java.io.IOException;
-
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.example.vehiclerentingapplication.entity.User;
+import com.example.vehiclerentingapplication.request.UserRequest;
+import com.example.vehiclerentingapplication.response.UserResponse;
 import com.example.vehiclerentingapplication.service.UserService;
 import com.example.vehiclerentingapplication.util.ResponseStructure;
-import com.example.vehiclerentingapplication.util.SimpleResponseStructure;
 
 @RestController
 public class UserController {
@@ -22,16 +19,20 @@ public class UserController {
 	private final UserService userService;
 
 	public UserController(UserService userService) {
-		super();
 		this.userService = userService;
 	}
 
 	@PostMapping("/register")
-	public ResponseEntity<ResponseStructure<User>> saveUser(@RequestBody User user) {
-		user = userService.saveUser(user);
+	public ResponseEntity<ResponseStructure<UserResponse>> saveUser(@RequestBody UserRequest userRequest) {
+		UserResponse userResponse = userService.saveUser(userRequest);
 		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(ResponseStructure.create(HttpStatus.CREATED.value(), "User Created", user));
+				.body(ResponseStructure.create(HttpStatus.CREATED.value(), "User Created", userResponse));
 	}
-	
-	 
+
+	@GetMapping("/users")
+	public ResponseEntity<ResponseStructure<UserResponse>> getUserById(@RequestParam("userId") int id) {
+		UserResponse userResponse = userService.getUserById(id);
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(ResponseStructure.create(HttpStatus.OK.value(), "User fetched successfully", userResponse));
+	}
 }
