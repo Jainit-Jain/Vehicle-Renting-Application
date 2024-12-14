@@ -44,6 +44,29 @@ public class ImageService {
 		}
 	}
 
+	public void uploadUserProfilePicture(int userId, MultipartFile file) {
+		Optional<User> optional = userRepository.findById(userId);
+		if (optional.isPresent()) {
+			User user = optional.get();
+			if (user.getProfilePicture() != null) {
+				Image image = user.getProfilePicture();
+				this.uploadUserProfilePicture(userId, file);
+				imageRepository.delete(image);
+			}
+			this.uploadUserProfile(file, user);
+		} else {
+			throw new UserNotFoundByIdException("User not found");
+		}
+
+	}
+
+	private void uploadUserProfile(MultipartFile file, User user) {
+		Image image = imageRepository.save(this.getImage(file));
+		user.setProfilePicture(image);
+		userRepository.save(user);
+
+	}
+
 	public static Image getImage(MultipartFile imagefile) {
 		Image image = new Image();
 		try {
