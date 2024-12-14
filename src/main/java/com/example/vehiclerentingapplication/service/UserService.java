@@ -1,9 +1,12 @@
 package com.example.vehiclerentingapplication.service;
 
 import org.springframework.stereotype.Service;
-import com.example.vehiclerentingapplication.entity.User;
-import com.example.vehiclerentingapplication.exception.UserNotFoundByIdException;
+import org.springframework.web.multipart.MultipartFile;
 import com.example.vehiclerentingapplication.mapper.UserMapper;
+import com.example.vehiclerentingapplication.entity.User;
+import com.example.vehiclerentingapplication.enums.UserRole;
+import com.example.vehiclerentingapplication.exception.UserNotFoundByIdException;
+import com.example.vehiclerentingapplication.repository.ImageRepository;
 import com.example.vehiclerentingapplication.repository.UserRepository;
 import com.example.vehiclerentingapplication.request.UserRequest;
 import com.example.vehiclerentingapplication.response.UserResponse;
@@ -12,25 +15,29 @@ import com.example.vehiclerentingapplication.response.UserResponse;
 public class UserService {
 
 	private final UserRepository userRepository;
-	private final UserMapper userMapper;
 
-	public UserService(UserRepository userRepository, UserMapper userMapper) {
+	private final UserMapper mapper;
+
+	private final ImageRepository imageRepository;
+
+	public UserService(UserRepository userRepository, UserMapper mapper, ImageRepository imageRepository) {
+		super();
 		this.userRepository = userRepository;
-		this.userMapper = userMapper;
+		this.mapper = mapper;
+		this.imageRepository = imageRepository;
 	}
 
-	public UserResponse saveUser(UserRequest userRequest) {
-		User user = userMapper.mapToUser(userRequest);
-		User savedUser = userRepository.save(user);
-		return userMapper.mapToResponse(savedUser);
+	public UserResponse register(UserRequest userRequest, UserRole userRole) {
+		User user = mapper.mapToUser(userRequest, new User());
+		user.setRole(userRole);
+		user = userRepository.save(user);
+		return mapper.mapToResponse(user);
 	}
 
-	public UserResponse getUserById(int userId) {
-
+	public UserResponse findUserById(int userId) {
 		User user = userRepository.findById(userId)
-				.orElseThrow(() -> new UserNotFoundByIdException("User Not Found By Id"));
-
-		UserResponse userResponse = userMapper.mapToResponse(user);
+				.orElseThrow(() -> new UserNotFoundByIdException("User Not Found By ID"));
+		UserResponse userResponse = mapper.mapToResponse(user);
 
 		Integer profilePictureId = userRepository.findImageIdByUserId(userId);
 
@@ -39,7 +46,27 @@ public class UserService {
 		} else {
 			userResponse.setProfilePictureLink(null);
 		}
-
 		return userResponse;
 	}
+
+	public UserResponse updateUserById(int userId, UserRequest userRequest) {
+
+		User existingUser = userRepository.findById(userId)
+				.orElseThrow(() -> new UserNotFoundByIdException("User Not Found By ID: " + userId));
+
+		mapper.mapToUser(userRequest, existingUser);
+
+		userRepository.save(existingUser);
+
+		UserResponse response = mapper.mapToResponse(existingUser);
+
+		if (existingUser.getProfilePicture() != null) {
+			response.setProfilePictureLink("/find/imageById?imageId=" + existingUser.getProfilePicture().getImageId());
+		} else {
+			response.setProfilePictureLink(null);
+		}
+
+		return response;
+	}
+
 }
