@@ -26,19 +26,19 @@ public class ApplicationExceptionHandler {
 	@ExceptionHandler
 	public ResponseEntity<ErrorStructure> handleImageNotFound(ImageNotFoundException ex) {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorStructure.create(HttpStatus.NOT_FOUND.value(),
-				ex.getMessage(), "failed to find the image with given Id"));
+				ex.getMessage(), "failed to find the image "));
 	}
-	
+
 	@ExceptionHandler
 	public ResponseEntity<ErrorStructure> handleVehicleNotFound(VehicleNotFoundException ex) {
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorStructure.create(HttpStatus.NOT_FOUND.value(),
-				ex.getMessage(), "failed to find the vehicle "));
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+				ErrorStructure.create(HttpStatus.NOT_FOUND.value(), ex.getMessage(), "failed to find the vehicle "));
 	}
-	
+
 	@ExceptionHandler
 	public ResponseEntity<ErrorStructure> handleUsernameNotFoundException(UsernameNotFoundException ex) {
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorStructure.create(HttpStatus.NOT_FOUND.value(),
-				ex.getMessage(), "failed to find the user "));
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				.body(ErrorStructure.create(HttpStatus.NOT_FOUND.value(), ex.getMessage(), "failed to find the user "));
 	}
 
 }

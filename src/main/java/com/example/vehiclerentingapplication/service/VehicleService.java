@@ -2,8 +2,6 @@ package com.example.vehiclerentingapplication.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.example.vehiclerentingapplication.enums.VehicleType;
 import com.example.vehiclerentingapplication.exception.VehicleNotFoundException;
 import com.example.vehiclerentingapplication.request.VehicleRequest;
 import com.example.vehiclerentingapplication.response.VehicleResponse;
@@ -56,7 +54,6 @@ public class VehicleService {
 
 		Vehicle existingVehicle = vehicleRepository.findById(vehicleId)
 				.orElseThrow(() -> new VehicleNotFoundException("Vehicle not found"));
-
 		existingVehicle.setBrand(request.getBrand());
 		existingVehicle.setModel(request.getModel());
 		existingVehicle.setFuleType(request.getFuelType());
