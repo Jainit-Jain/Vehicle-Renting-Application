@@ -42,16 +42,16 @@ public class UserController {
 	}
 
 	@GetMapping("/users")
-	public ResponseEntity<ResponseStructure<UserResponse>> findUserById(@RequestParam("userId") int userId) {
-		UserResponse response = userService.findUserById(userId);
+	public ResponseEntity<ResponseStructure<UserResponse>> findUserById() {
+		UserResponse response = userService.findUserById();
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(ResponseStructure.create(HttpStatus.OK.value(), "User Found Successfully", response));
 	}
 
 	@PutMapping("/update")
-	public ResponseEntity<ResponseStructure<UserResponse>> updateUser(@RequestParam("userId") int userId,
+	public ResponseEntity<ResponseStructure<UserResponse>> updateUser(
 	        @RequestBody UserRequest request) {
-	    UserResponse response = userService.updateUserById(userId, request);
+	    UserResponse response = userService.updateUserById( request);
 	    return ResponseEntity.status(HttpStatus.OK)
 	            .body(ResponseStructure.create(HttpStatus.OK.value(), "User Updated Successfully", response));
 	}
