@@ -2,11 +2,9 @@ package com.example.vehiclerentingapplication.service;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import com.example.vehiclerentingapplication.mapper.UserMapper;
 import com.example.vehiclerentingapplication.entity.User;
 import com.example.vehiclerentingapplication.enums.UserRole;
-import com.example.vehiclerentingapplication.exception.UserNotFoundByIdException;
 import com.example.vehiclerentingapplication.repository.UserRepository;
 import com.example.vehiclerentingapplication.request.UserRequest;
 import com.example.vehiclerentingapplication.response.UserResponse;
