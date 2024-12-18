@@ -1,10 +1,12 @@
 package com.example.vehiclerentingapplication.security;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import com.example.vehiclerentingapplication.entity.User;
 
 public class UserDetailsImpl implements UserDetails {
@@ -18,8 +20,7 @@ public class UserDetailsImpl implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
+		return List.of(new SimpleGrantedAuthority(user.getRole().name()));
 	}
 
 	@Override

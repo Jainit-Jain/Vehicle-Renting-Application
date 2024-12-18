@@ -41,19 +41,25 @@ public class UserController {
 				.body(ResponseStructure.create(HttpStatus.CREATED.value(), "Renting Partner Created", response));
 	}
 
+	@PostMapping("/admin/register")
+	public ResponseEntity<ResponseStructure<UserResponse>> registerAdmin(@RequestBody UserRequest request) {
+		UserResponse response = userService.register(request, UserRole.ADMIN);
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(ResponseStructure.create(HttpStatus.CREATED.value(), "Admin Created", response));
+	}
+
 	@GetMapping("/users")
 	public ResponseEntity<ResponseStructure<UserResponse>> findUserById() {
-		UserResponse response = userService.findUserById();
+		UserResponse response = userService.findUser();
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(ResponseStructure.create(HttpStatus.OK.value(), "User Found Successfully", response));
 	}
 
 	@PutMapping("/update")
-	public ResponseEntity<ResponseStructure<UserResponse>> updateUser(
-	        @RequestBody UserRequest request) {
-	    UserResponse response = userService.updateUserById( request);
-	    return ResponseEntity.status(HttpStatus.OK)
-	            .body(ResponseStructure.create(HttpStatus.OK.value(), "User Updated Successfully", response));
+	public ResponseEntity<ResponseStructure<UserResponse>> updateUser(@RequestBody UserRequest request) {
+		UserResponse response = userService.updateUser(request);
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(ResponseStructure.create(HttpStatus.OK.value(), "User Updated Successfully", response));
 	}
 
 }

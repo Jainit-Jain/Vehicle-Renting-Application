@@ -31,14 +31,21 @@ public class UserService {
 	}
 
 	public UserResponse register(UserRequest userRequest, UserRole userRole) {
-		User user = mapper.mapToUser(userRequest, new User());
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		user.setRole(userRole);
-		user = userRepository.save(user);
-		return mapper.mapToResponse(user);
+		try {
+			User user = mapper.mapToUser(userRequest, new User());
+			user.setPassword(passwordEncoder.encode(user.getPassword()));
+			user.setRole(userRole);
+			user = userRepository.save(user);
+			return mapper.mapToResponse(user);
+		} catch (Exception ex) {
+			if (ex.getMessage().contains("email")) {
+				throw new IllegalArgumentException("Email already exists. Please use a different email.");
+			}
+			throw ex;
+		}
 	}
 
-	public UserResponse findUserById() {
+	public UserResponse findUser() {
 		User user = authUtil.getCurrentUser();
 
 		UserResponse userResponse = mapper.mapToResponse(user);
@@ -53,7 +60,7 @@ public class UserService {
 		return userResponse;
 	}
 
-	public UserResponse updateUserById(UserRequest userRequest) {
+	public UserResponse updateUser(UserRequest userRequest) {
 
 		User updatedUser = mapper.mapToUser(userRequest, authUtil.getCurrentUser());
 		updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
