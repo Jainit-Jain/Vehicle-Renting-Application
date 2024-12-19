@@ -40,5 +40,10 @@ public class ApplicationExceptionHandler {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND)
 				.body(ErrorStructure.create(HttpStatus.NOT_FOUND.value(), ex.getMessage(), "failed to find the user "));
 	}
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure> handleIllegalArgumentException(IllegalArgumentException ex) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				.body(ErrorStructure.create(HttpStatus.NOT_FOUND.value(), ex.getMessage(), "Email already exists. Please use a different email. "));
+	}
 
 }
