@@ -27,8 +27,8 @@ public class Vehicle {
 	private FuelType fuelType;
 
 	@OneToMany
-	  private List<Image> images;
-	
+	private List<Image> images;
+
 	public List<Image> getImages() {
 		return images;
 	}
@@ -44,7 +44,6 @@ public class Vehicle {
 	public void setFuelType(FuelType fuelType) {
 		this.fuelType = fuelType;
 	}
-
 
 	public int getVehicleId() {
 		return vehicleId;

@@ -15,29 +15,34 @@ import java.util.List;
 @RestController
 public class VehicleListingController {
 
-    private final VehicleListingService vehicleListingService;
+	private final VehicleListingService vehicleListingService;
 
-    public VehicleListingController(VehicleListingService vehicleListingService) {
-        this.vehicleListingService = vehicleListingService;
-    }
-
-	@PreAuthorize("hasAuthority('RENTING_PARTNER')")
-    @PostMapping("/create/vehicle-listing")
-    public ResponseEntity<ResponseStructure<VehicleListingResponse>> createVehicleListing(@RequestParam("vehicleId") int vehicleId,
-            @RequestBody VehicleListingRequest request) {
-        VehicleListingResponse response = vehicleListingService.createVehicleListing(request,vehicleId);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ResponseStructure.create(HttpStatus.CREATED.value(), "Vehicle Listing Created Successfully", response));
-    }
-	
-	
-	@GetMapping("/vehicle-listings")
-	public ResponseEntity<ResponseStructure<List<VehicleListingResponse>>> getVehicleListingsByVehicleId(
-	        @RequestParam("vehicleId") int vehicleId) {
-	    List<VehicleListingResponse> responses = vehicleListingService.getVehicleListingsByVehicleId(vehicleId);
-	    return ResponseEntity.ok(
-	            ResponseStructure.create(HttpStatus.OK.value(), "Vehicle Listings Retrieved Successfully", responses));
+	public VehicleListingController(VehicleListingService vehicleListingService) {
+		this.vehicleListingService = vehicleListingService;
 	}
 
+	@PreAuthorize("hasAuthority('RENTING_PARTNER')")
+	@PostMapping("/create/vehicle-listing")
+	public ResponseEntity<ResponseStructure<VehicleListingResponse>> createVehicleListing(
+			@RequestParam("vehicleId") int vehicleId, @RequestBody VehicleListingRequest request) {
+		VehicleListingResponse response = vehicleListingService.createVehicleListing(request, vehicleId);
+		return ResponseEntity.status(HttpStatus.CREATED).body(
+				ResponseStructure.create(HttpStatus.CREATED.value(), "Vehicle Listing Created Successfully", response));
+	}
 
+	@PostMapping("/vehicle-listing/add-locations")
+	public ResponseEntity<ResponseStructure<VehicleListingResponse>> addLocationsToVehicleListing(
+			@RequestParam("listingId") int listingId, @RequestParam("locationIds") List<Integer> locationIds) {
+		VehicleListingResponse response = vehicleListingService.addLocationsToVehicleListing(listingId, locationIds);
+		return ResponseEntity
+				.ok(ResponseStructure.create(HttpStatus.OK.value(), "Locations Added Successfully", response));
+	}
+
+	@GetMapping("/vehicle-listings")
+	public ResponseEntity<ResponseStructure<List<VehicleListingResponse>>> getVehicleListingsByVehicleId(
+			@RequestParam("vehicleId") int vehicleId) {
+		List<VehicleListingResponse> responses = vehicleListingService.getVehicleListingsByVehicleId(vehicleId);
+		return ResponseEntity.ok(
+				ResponseStructure.create(HttpStatus.OK.value(), "Vehicle Listings Retrieved Successfully", responses));
+	}
 }

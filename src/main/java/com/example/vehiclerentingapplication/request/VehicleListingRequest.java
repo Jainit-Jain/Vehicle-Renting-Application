@@ -1,5 +1,7 @@
 package com.example.vehiclerentingapplication.request;
 
+import java.util.List;
+
 import com.example.vehiclerentingapplication.enums.Seating;
 
 public class VehicleListingRequest {
@@ -7,7 +9,15 @@ public class VehicleListingRequest {
 	private String vehicleNo;
 	private double pricePerDay;
 	private Seating seating;
-	
+	private List<Integer> locationIds;
+
+	public List<Integer> getLocationIds() {
+		return locationIds;
+	}
+
+	public void setLocationIds(List<Integer> locationIds) {
+		this.locationIds = locationIds;
+	}
 
 	public int getVehicleId() {
 		return vehicleId;
