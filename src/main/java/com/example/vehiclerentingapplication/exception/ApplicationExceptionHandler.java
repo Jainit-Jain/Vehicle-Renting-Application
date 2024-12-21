@@ -50,5 +50,11 @@ public class ApplicationExceptionHandler {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorStructure.create(HttpStatus.NOT_FOUND.value(),
 				ex.getMessage(), "No Vehicle Listings Present for the given id"));
 	}
+	
+	@ExceptionHandler
+	public ResponseEntity<ErrorStructure> handleLocationNotFound(LocationNotFoundException ex) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorStructure.create(HttpStatus.NOT_FOUND.value(),
+				ex.getMessage(), "failed to find the location"));
+	}
 
 }

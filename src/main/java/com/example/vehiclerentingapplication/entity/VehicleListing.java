@@ -1,12 +1,14 @@
 package com.example.vehiclerentingapplication.entity;
 
-import com.example.vehiclerentingapplication.enums.Seating;
+import java.util.List;
 
+import com.example.vehiclerentingapplication.enums.Seating;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 
 @Entity
@@ -35,6 +37,17 @@ public class VehicleListing {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private User rentingPartner;
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	private List<Location> location;
+
+	public List<Location> getLocation() {
+		return location;
+	}
+
+	public void setLocation(List<Location> location) {
+		this.location = location;
+	}
 
 	public User getRentingPartner() {
 		return rentingPartner;

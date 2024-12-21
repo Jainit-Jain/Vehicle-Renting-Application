@@ -7,6 +7,8 @@ public class VehicleListingResponse {
 	private String vehicleNo;
 	private double pricePerDay;
 	private Seating seating;
+	
+
 
 	public int getListingId() {
 		return listingId;
